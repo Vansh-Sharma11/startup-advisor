@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Startup Advisor - Admin Panel</title>
+    <link rel="stylesheet" href="admin-styles.css">
+</head>
+<body>
+    <nav class="admin-navbar">
+        <div class="container">
+            <div class="nav-content">
+                <h1 class="admin-logo">🔐 Admin Panel</h1>
+                <div class="nav-buttons">
+                    <a href="index.html" class="btn btn-secondary">← Back to Website</a>
+                    <button class="btn btn-danger" id="logoutBtn">Logout</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="admin-container">
+        <!-- Login Screen -->
+        <div id="loginScreen" class="screen active">
+            <div class="login-box">
+                <h2>🔐 Admin Login</h2>
+                <p>Enter password to access admin panel</p>
+                <input type="password" id="adminPassword" placeholder="Enter admin password" class="input-field">
+                <button class="btn btn-primary btn-lg" onclick="loginAdmin()">Login</button>
+                <p class="hint" style="margin-top: 2rem; color: #999; font-size: 0.9rem;">
+                    <strong>Demo Password:</strong> admin123
+                </p>
+            </div>
+        </div>
+
+        <!-- Admin Dashboard -->
+        <div id="adminScreen" class="screen">
+            <div class="admin-grid">
+                <!-- Sidebar -->
+                <aside class="admin-sidebar">
+                    <button class="sidebar-btn active" onclick="showTab('dashboard')">📊 Dashboard</button>
+                    <button class="sidebar-btn" onclick="showTab('fields')">🏢 Startup Fields</button>
+                    <button class="sidebar-btn" onclick="showTab('quiz')">❓ Quiz Questions</button>
+                    <button class="sidebar-btn" onclick="showTab('settings')">⚙️ Settings</button>
+                </aside>
+
+                <!-- Main Content -->
+                <main class="admin-main">
+                    <!-- Dashboard Tab -->
+                    <div id="dashboard-tab" class="tab active">
+                        <h2>📊 Dashboard</h2>
+                        <div class="stats-grid">
+                            <div class="stat-card">
+                                <h3>Total Startup Fields</h3>
+                                <p class="stat-value" id="totalFields">8</p>
+                            </div>
+                            <div class="stat-card">
+                                <h3>Quiz Steps</h3>
+                                <p class="stat-value">4</p>
+                            </div>
+                            <div class="stat-card">
+                                <h3>Site Status</h3>
+                                <p class="stat-value" style="color: #10b981;">🟢 Live</p>
+                            </div>
+                        </div>
+                        <div class="info-box">
+                            <h3>Welcome to Admin Panel!</h3>
+                            <p>Use the sidebar to manage:</p>
+                            <ul>
+                                <li>✏️ Edit startup fields and descriptions</li>
+                                <li>❓ Customize quiz questions</li>
+                                <li>🎨 Update site colors and settings</li>
+                                <li>📊 View site statistics</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Startup Fields Tab -->
+                    <div id="fields-tab" class="tab">
+                        <h2>🏢 Manage Startup Fields</h2>
+                        <button class="btn btn-primary" onclick="showAddFieldForm()">+ Add New Field</button>
+                        <div id="fieldsContainer" class="fields-container"></div>
+                    </div>
+
+                    <!-- Quiz Tab -->
+                    <div id="quiz-tab" class="tab">
+                        <h2>❓ Quiz Questions</h2>
+                        <p>Edit quiz questions and customize the flow</p>
+                        <div class="quiz-steps">
+                            <div class="quiz-step-card">
+                                <h3>Step 1: Personal Info</h3>
+                                <p>Name and age range</p>
+                                <button class="btn btn-secondary btn-sm" onclick="editQuizStep(1)">Edit</button>
+                            </div>
+                            <div class="quiz-step-card">
+                                <h3>Step 2: Personality</h3>
+                                <p>Traits and motivation</p>
+                                <button class="btn btn-secondary btn-sm" onclick="editQuizStep(2)">Edit</button>
+                            </div>
+                            <div class="quiz-step-card">
+                                <h3>Step 3: Work Style</h3>
+                                <p>Preferences and risk tolerance</p>
+                                <button class="btn btn-secondary btn-sm" onclick="editQuizStep(3)">Edit</button>
+                            </div>
+                            <div class="quiz-step-card">
+                                <h3>Step 4: Interests</h3>
+                                <p>Industries and ideas</p>
+                                <button class="btn btn-secondary btn-sm" onclick="editQuizStep(4)">Edit</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Settings Tab -->
+                    <div id="settings-tab" class="tab">
+                        <h2>⚙️ Settings</h2>
+                        
+                        <div class="settings-section">
+                            <h3>Site Colors</h3>
+                            <div class="color-grid">
+                                <div class="color-input-group">
+                                    <label>Primary Color</label>
+                                    <input type="color" id="primaryColor" value="#6366f1" onchange="updateSiteColor('primary', this.value)">
+                                </div>
+                                <div class="color-input-group">
+                                    <label>Secondary Color</label>
+                                    <input type="color" id="secondaryColor" value="#ec4899" onchange="updateSiteColor('secondary', this.value)">
+                                </div>
+                                <div class="color-input-group">
+                                    <label>Success Color</label>
+                                    <input type="color" id="successColor" value="#10b981" onchange="updateSiteColor('success', this.value)">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="settings-section">
+                            <h3>Footer Text</h3>
+                            <textarea id="footerText" class="textarea-field" placeholder="Enter footer text">Made with ❤️ LOVE by Vansh Sharma</textarea>
+                            <button class="btn btn-primary" onclick="updateFooter()">Save Footer</button>
+                        </div>
+
+                        <div class="settings-section">
+                            <h3>Data Management</h3>
+                            <div class="button-group">
+                                <button class="btn btn-secondary" onclick="exportData()">📥 Export Data</button>
+                                <button class="btn btn-secondary" onclick="resetToDefault()">🔄 Reset to Default</button>
+                            </div>
+                        </div>
+                    </div>
+                </main>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add/Edit Field Modal -->
+    <div id="fieldModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeFieldModal()">&times;</span>
+            <h2>Edit Startup Field</h2>
+            <form id="fieldForm">
+                <div class="form-group">
+                    <label>Field Name</label>
+                    <input type="text" id="fieldName" class="input-field" required>
+                </div>
+                <div class="form-group">
+                    <label>Display Name</label>
+                    <input type="text" id="fieldDisplayName" class="input-field" required>
+                </div>
+                <div class="form-group">
+                    <label>Emoji</label>
+                    <input type="text" id="fieldEmoji" class="input-field" placeholder="e.g., 💻" required>
+                </div>
+                <div class="form-group">
+                    <label>Description</label>
+                    <textarea id="fieldDescription" class="textarea-field" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Risk Level</label>
+                    <select id="fieldRisk" class="select-field">
+                        <option>Low</option>
+                        <option>Low-Medium</option>
+                        <option>Medium</option>
+                        <option>Medium-High</option>
+                        <option>High</option>
+                    </select>
+                </div>
+                <div class="button-group">
+                    <button type="button" class="btn btn-secondary" onclick="closeFieldModal()">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save Field</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="admin-script.js"></script>
+</body>
+</html>
